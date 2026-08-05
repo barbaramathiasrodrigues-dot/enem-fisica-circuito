@@ -33,7 +33,7 @@
       width: 100%;
     }
 
-    /* Cabeçalho do ENEM */
+    /* Topo do ENEM */
     .enem-header {
       background: linear-gradient(135deg, #1e3a8a, #0284c7);
       padding: 16px 24px;
@@ -78,7 +78,7 @@
       margin-bottom: 20px;
     }
 
-    /* Área reservada para Vídeo/Imagem do Enunciado */
+    /* Área do Diagrama da Placa Individual */
     .media-placeholder {
       background: #020617;
       border: 2px dashed var(--border);
@@ -98,20 +98,20 @@
     .alternatives-container {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
       margin-top: 24px;
     }
 
     .option-card {
       background: #111827;
       border: 2px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
+      border-radius: 14px;
+      padding: 18px;
       cursor: pointer;
       transition: all 0.25s ease;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
     }
 
     .option-card:hover {
@@ -137,26 +137,31 @@
       align-items: center;
       justify-content: center;
       font-size: 1.2rem;
+      flex-shrink: 0;
     }
 
-    /* Espaço reservado para o VÍDEO de cada alternativa */
+    /* 🎬 NOVO CSS: ACOMODAÇÃO CONFORTÁVEL E SEM CORTES DO VÍDEO */
     .option-video-slot {
       width: 100%;
-      background: #000;
-      border-radius: 8px;
+      background: #000000;
+      border-radius: 10px;
       overflow: hidden;
-      max-height: 280px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #1e293b;
     }
 
     .option-video-slot video {
       width: 100%;
-      height: 100%;
-      max-height: 280px;
-      object-fit: cover;
+      height: auto;
+      max-width: 100%;
+      object-fit: contain; /* Garante que NENHUMA parte do vídeo seja cortada */
       display: block;
+      border-radius: 10px;
     }
 
-    /* Modal / Painel de Feedback */
+    /* Painel de Feedback */
     .feedback-panel {
       display: none;
       background: var(--card-bg);
@@ -230,9 +235,6 @@
 
     <!-- VÍDEO / DIAGRAMA DA PLACA INDIVIDUAL -->
     <div class="media-placeholder">
-      <!-- 🎬 ESPAÇO PARA O VÍDEO DA PLACA INDIVIDUAL DA QUESTÃO -->
-      <!-- Para inserir o vídeo no futuro, descomente a linha abaixo e insira seu arquivo -->
-      <!-- <video autoplay loop muted playsinline src="video_placa_individual.mp4"></video> -->
       <p style="color: var(--text-muted); font-size: 0.9rem;">
         ⚡ [ Diagrama do Gerador Não Ideal: ε = 40 V | r ]
       </p>
@@ -254,7 +256,7 @@
           <span>Gerador de 136 V e Resistência de 3,2 Ω</span>
         </div>
         <div class="option-video-slot">
-          <!-- 🎬 VÍDEO DA ALTERNATIVA A -->
+          <!-- 🎬 VÍDEO ACOMODADO CONFORTAVELMENTE SEM CORTES -->
           <video autoplay loop muted playsinline src="circuito.mp4"></video>
         </div>
       </div>
@@ -278,7 +280,6 @@
           <span>Gerador de 120 V e Resistência de 5,3 Ω</span>
         </div>
         <div class="option-video-slot">
-          <!-- 🎬 ESPAÇO FUTURO PARA VÍDEO DA ALTERNATIVA C -->
           <p style="color: var(--text-muted); text-align: center; padding: 40px 0;">🎥 Vídeo do Circuito C (120 V | 5,3 Ω)</p>
         </div>
       </div>
@@ -290,7 +291,6 @@
           <span>Gerador de 102 V e Resistência de 2,4 Ω</span>
         </div>
         <div class="option-video-slot">
-          <!-- 🎬 ESPAÇO FUTURO PARA VÍDEO DA ALTERNATIVA D -->
           <p style="color: var(--text-muted); text-align: center; padding: 40px 0;">🎥 Vídeo do Circuito D (102 V | 2,4 Ω)</p>
         </div>
       </div>
@@ -302,7 +302,6 @@
           <span>Gerador de 102 V e Resistência de 5,3 Ω</span>
         </div>
         <div class="option-video-slot">
-          <!-- 🎬 ESPAÇO FUTURO PARA VÍDEO DA ALTERNATIVA E -->
           <p style="color: var(--text-muted); text-align: center; padding: 40px 0;">🎥 Vídeo do Circuito E (102 V | 5,3 Ω)</p>
         </div>
       </div>
@@ -365,13 +364,9 @@
       title.style.color = 'var(--danger)';
     }
 
-    // Rola a tela suavemente para a explicação
     feedback.scrollIntoView({ behavior: 'smooth' });
   }
 </script>
-
-</body>
-</html>
 
 </body>
 </html>
