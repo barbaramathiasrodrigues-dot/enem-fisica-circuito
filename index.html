@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador ENEM - Questão 120 (Circuito Fotovoltaico)</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --accent: #ff7300;
+      --text: #f8fafc;
+      --success: #22c55e;
+      --danger: #ef4444;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 850px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      color: #38bdf8;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+    }
+
+    /* Container do Vídeo 3D Real */
+    .video-card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      margin-bottom: 24px;
+      border: 1px solid #334155;
+      overflow: hidden;
+      position: relative;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 14px;
+    }
+
+    /* Badge indicando o estado do circuito no vídeo */
+    .status-badge {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid #475569;
+      color: #38bdf8;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      backdrop-filter: blur(8px);
+    }
+
+    /* Painel de Opções */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .btn-option {
+      background: var(--card);
+      border: 2px solid #334155;
+      color: var(--text);
+      padding: 16px 10px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-align: center;
+    }
+
+    .btn-option:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(255, 115, 0, 0.2);
+    }
+
+    /* Caixa de Resposta / Feedback */
+    .feedback {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 20px;
+      display: none;
+      animation: fadeIn 0.3s ease;
+      border: 1px solid #334155;
+    }
+
+    .feedback.active { display: block; }
+    .feedback-title { font-size: 1.25rem; font-weight: bold; margin-bottom: 10px; }
+    .feedback.correct { border-left: 6px solid var(--success); }
+    .feedback.wrong { border-left: 6px solid var(--danger); }
+
+    ul { margin: 8px 0 0 20px; padding: 0; line-height: 1.6; }
+
+    @keyframes fadeIn { 
+      from { opacity: 0; transform: translateY(10px); } 
+      to { opacity: 1; transform: translateY(0); } 
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>⚡ Simulador de Eletrodinâmica: ENEM Questão 120</h1>
+  <p class="subtitle">Assista à animação 3D e selecione qual circuito atende à bomba d'água (100V ± 5V):</p>
+
+  <!-- Player do Vídeo do Circuito -->
+  <div class="video-card">
+    <video autoplay loop muted playsinline id="circuito-video">
+      <source src="circuito.mp4" type="video/mp4" />
+      Seu navegador não suporta a exibição de vídeos HTML5.
+    </video>
+    <div class="status-badge" id="circuit-status">⚡ Simulação Ativa</div>
+  </div>
+
+  <!-- Botões das Alternativas -->
+  <div class="options-grid">
+    <button class="btn-option" onclick="testarCircuito('A', 136, 3.2)">A) 136V | 3,2Ω</button>
+    <button class="btn-option" onclick="testarCircuito('B', 120, 2.4)">B) 120V | 2,4Ω</button>
+    <button class="btn-option" onclick="testarCircuito('C', 120, 5.3)">C) 120V | 5,3Ω</button>
+    <button class="btn-option" onclick="testarCircuito('D', 102, 2.4)">D) 102V | 2,4Ω</button>
+    <button class="btn-option" onclick="testarCircuito('E', 102, 5.3)">E) 102V | 5,3Ω</button>
+  </div>
+
+  <!-- Resultado Interativo -->
+  <div id="feedback" class="feedback">
+    <div id="feedback-title" class="feedback-title"></div>
+    <div id="feedback-body"></div>
+  </div>
+</div>
+
+<script>
+  function testarCircuito(opcao, v, r) {
+    const statusBadge = document.getElementById('circuit-status');
+    const feedback = document.getElementById('feedback');
+    const fbTitle = document.getElementById('feedback-title');
+    const fbBody = document.getElementById('feedback-body');
+
+    feedback.className = 'feedback active';
+
+    if (opcao === 'B') {
+      statusBadge.textContent = '💧 Bomba Operando (102 V)';
+      statusBadge.style.color = '#22c55e';
+
+      feedback.className = 'feedback active correct';
+      fbTitle.textContent = '✅ Resposta Correta! (Alternativa B)';
+      fbTitle.style.color = 'var(--success)';
+      fbBody.innerHTML = `
+        <p><b>Resolução Física Passo a Passo:</b></p>
+        <ul>
+          <li><b>Resistência de 1 placa:</b> $U = \\varepsilon - r \\cdot I \\implies 34 = 40 - 7,5r \\implies r = 0,8\\,\\Omega$</li>
+          <li><b>Número de placas:</b> Com 3 placas em série, a tensão de operação na bomba fica $3 \\times 34\\text{V} = 102\\text{V}$ (perfeitamente dentro da faixa permitida de $95\\text{V}$ a $105\\text{V}$).</li>
+          <li><b>Gerador equivalente:</b> $\\varepsilon = 3 \\times 40\\text{V} = 120\\text{V}$ e $r_{eq} = 3 \\times 0,8\\,\\Omega = 2,4\\,\\Omega$.</li>
+        </ul>`;
+    } else {
+      statusBadge.textContent = opcao === 'A' ? '💥 Sobretensão!' : '❌ Falha de Tensão';
+      statusBadge.style.color = '#ef4444';
+
+      feedback.className = 'feedback active wrong';
+      fbTitle.textContent = `❌ Alternativa ${opcao} Incorreta`;
+      fbTitle.style.color = 'var(--danger)';
+
+      if (opcao === 'A') {
+        fbBody.innerHTML = 'Essa alternativa representa 4 placas em série (136V do vídeo). A tensão excede o limite tolerado pela bomba, podendo queimá-la!';
+      } else if (opcao === 'D' || opcao === 'E') {
+        fbBody.innerHTML = '102V é a f.e.m. em circuito aberto de uma quantidade incorreta de placas. Quando a corrente circular, a tensão cairá muito abaixo do necessário!';
+      } else {
+        fbBody.innerHTML = 'A resistência interna do gerador equivalente foi calculada incorretamente para essa quantidade de placas.';
+      }
+    }
+  }
+</script>
+
+</body>
+</html>
