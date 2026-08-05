@@ -3,203 +3,375 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simulador ENEM - Questão 120 (Circuito Fotovoltaico)</title>
+  <title>ENEM Interativo - Questão 120 (Eletrodinâmica)</title>
   <style>
     :root {
-      --bg: #0f172a;
-      --card: #1e293b;
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
       --accent: #ff7300;
       --text: #f8fafc;
+      --text-muted: #94a3b8;
       --success: #22c55e;
       --danger: #ef4444;
+      --border: #334155;
     }
 
+    * { box-sizing: border-box; }
+
     body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background-color: var(--bg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
       color: var(--text);
       margin: 0;
-      padding: 20px;
+      padding: 20px 12px;
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      justify-content: center;
     }
 
     .container {
-      max-width: 850px;
+      max-width: 900px;
       width: 100%;
     }
 
-    h1 {
-      font-size: 1.6rem;
-      color: #38bdf8;
-      text-align: center;
-      margin-bottom: 6px;
+    /* Cabeçalho do ENEM */
+    .enem-header {
+      background: linear-gradient(135deg, #1e3a8a, #0284c7);
+      padding: 16px 24px;
+      border-radius: 16px 16px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
-    .subtitle {
-      text-align: center;
-      color: #94a3b8;
-      font-size: 0.95rem;
-      margin-bottom: 24px;
-    }
-
-    /* Container do Vídeo 3D Real */
-    .video-card {
-      background: var(--card);
-      border-radius: 20px;
-      padding: 10px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-      margin-bottom: 24px;
-      border: 1px solid #334155;
-      overflow: hidden;
-      position: relative;
-    }
-
-    video {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 14px;
-    }
-
-    /* Badge indicando o estado do circuito no vídeo */
-    .status-badge {
-      position: absolute;
-      top: 25px;
-      right: 25px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid #475569;
-      color: #38bdf8;
+    .enem-tag {
+      background: rgba(255, 255, 255, 0.2);
       padding: 6px 14px;
       border-radius: 20px;
-      font-size: 0.85rem;
       font-weight: bold;
-      backdrop-filter: blur(8px);
+      font-size: 0.85rem;
+      letter-spacing: 1px;
     }
 
-    /* Painel de Opções */
-    .options-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
+    .enem-title {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    /* Card Principal */
+    .card {
+      background: var(--card-bg);
+      border-radius: 0 0 16px 16px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       margin-bottom: 24px;
     }
 
-    .btn-option {
-      background: var(--card);
-      border: 2px solid #334155;
-      color: var(--text);
-      padding: 16px 10px;
+    /* Enunciado */
+    .statement {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #e2e8f0;
+      margin-bottom: 20px;
+    }
+
+    /* Área reservada para Vídeo/Imagem do Enunciado */
+    .media-placeholder {
+      background: #020617;
+      border: 2px dashed var(--border);
       border-radius: 12px;
-      font-size: 1rem;
-      font-weight: bold;
+      padding: 16px;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .media-placeholder video, .media-placeholder img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    /* Grid de Alternativas */
+    .alternatives-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .option-card {
+      background: #111827;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
       cursor: pointer;
       transition: all 0.25s ease;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    .btn-option:hover {
+    .option-card:hover {
       border-color: var(--accent);
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(255, 115, 0, 0.2);
+      transform: translateY(-2px);
     }
 
-    /* Caixa de Resposta / Feedback */
-    .feedback {
-      background: var(--card);
-      border-radius: 14px;
-      padding: 20px;
+    .option-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .option-letter {
+      background: var(--accent);
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    /* Espaço reservado para o VÍDEO de cada alternativa */
+    .option-video-slot {
+      width: 100%;
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      max-height: 280px;
+    }
+
+    .option-video-slot video {
+      width: 100%;
+      height: 100%;
+      max-height: 280px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Modal / Painel de Feedback */
+    .feedback-panel {
       display: none;
-      animation: fadeIn 0.3s ease;
-      border: 1px solid #334155;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 24px;
+      border: 2px solid var(--border);
+      animation: slideUp 0.3s ease-out;
     }
 
-    .feedback.active { display: block; }
-    .feedback-title { font-size: 1.25rem; font-weight: bold; margin-bottom: 10px; }
-    .feedback.correct { border-left: 6px solid var(--success); }
-    .feedback.wrong { border-left: 6px solid var(--danger); }
+    .feedback-panel.active { display: block; }
 
-    ul { margin: 8px 0 0 20px; padding: 0; line-height: 1.6; }
+    .feedback-panel.correct {
+      border-color: var(--success);
+      background: rgba(34, 197, 94, 0.05);
+    }
 
-    @keyframes fadeIn { 
-      from { opacity: 0; transform: translateY(10px); } 
-      to { opacity: 1; transform: translateY(0); } 
+    .feedback-panel.wrong {
+      border-color: var(--danger);
+      background: rgba(239, 68, 68, 0.05);
+    }
+
+    .feedback-header {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    .resolution-box {
+      background: #090d16;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 16px;
+      border: 1px solid var(--border);
+      line-height: 1.7;
+    }
+
+    .resolution-step {
+      margin-bottom: 14px;
+    }
+
+    .resolution-step strong {
+      color: #38bdf8;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>⚡ Simulador de Eletrodinâmica: ENEM Questão 120</h1>
-  <p class="subtitle">Assista à animação 3D e selecione qual circuito atende à bomba d'água (100V ± 5V):</p>
-
-  <!-- Player do Vídeo do Circuito -->
-  <div class="video-card">
-    <video autoplay loop muted playsinline id="circuito-video">
-      <source src="circuito.mp4" type="video/mp4" />
-      Seu navegador não suporta a exibição de vídeos HTML5.
-    </video>
-    <div class="status-badge" id="circuit-status">⚡ Simulação Ativa</div>
+  
+  <!-- Topo Estilo ENEM -->
+  <div class="enem-header">
+    <h1 class="enem-title">QUESTÃO 120</h1>
+    <span class="enem-tag">PROVA DE CIÊNCIAS DA NATUREZA</span>
   </div>
 
-  <!-- Botões das Alternativas -->
-  <div class="options-grid">
-    <button class="btn-option" onclick="testarCircuito('A', 136, 3.2)">A) 136V | 3,2Ω</button>
-    <button class="btn-option" onclick="testarCircuito('B', 120, 2.4)">B) 120V | 2,4Ω</button>
-    <button class="btn-option" onclick="testarCircuito('C', 120, 5.3)">C) 120V | 5,3Ω</button>
-    <button class="btn-option" onclick="testarCircuito('D', 102, 2.4)">D) 102V | 2,4Ω</button>
-    <button class="btn-option" onclick="testarCircuito('E', 102, 5.3)">E) 102V | 5,3Ω</button>
-  </div>
+  <div class="card">
+    <!-- Enunciado Completo -->
+    <div class="statement">
+      <p>Em uma comunidade rural, os moradores utilizam uma bomba-d'água alimentada por <strong>100 V</strong> de tensão contínua, podendo variar em até <strong>5 V</strong> (faixa de 95 V a 105 V). Um eletrotécnico pretende instalar placas fotovoltaicas para alimentar essa bomba.</p>
+      
+      <p>As placas são idênticas e cada uma apresenta tensão de operação igual a <strong>34 V</strong> com corrente de <strong>7,5 A</strong>. Além disso, cada placa apresenta <strong>40 V</strong> de tensão elétrica, quando em circuito aberto.</p>
+      
+      <p>Assim, considerando que a placa descrita é um gerador não ideal, em circuito aberto ela pode ser representada conforme a figura abaixo:</p>
+    </div>
 
-  <!-- Resultado Interativo -->
-  <div id="feedback" class="feedback">
-    <div id="feedback-title" class="feedback-title"></div>
-    <div id="feedback-body"></div>
+    <!-- VÍDEO / DIAGRAMA DA PLACA INDIVIDUAL -->
+    <div class="media-placeholder">
+      <!-- 🎬 ESPAÇO PARA O VÍDEO DA PLACA INDIVIDUAL DA QUESTÃO -->
+      <!-- Para inserir o vídeo no futuro, descomente a linha abaixo e insira seu arquivo -->
+      <!-- <video autoplay loop muted playsinline src="video_placa_individual.mp4"></video> -->
+      <p style="color: var(--text-muted); font-size: 0.9rem;">
+        ⚡ [ Diagrama do Gerador Não Ideal: ε = 40 V | r ]
+      </p>
+    </div>
+
+    <div class="statement">
+      <p>O eletrotécnico construiu um circuito que permite à bomba-d'água operar corretamente com o menor número possível de placas conectadas. Para isso, desenhou um diagrama no qual todas essas placas são representadas como um único gerador não ideal, com a especificação das correspondentes características elétricas.</p>
+      
+      <p><strong>O diagrama que representa o circuito construído pelo eletrotécnico é:</strong></p>
+    </div>
+
+    <!-- Lista de Alternativas Interativas -->
+    <div class="alternatives-container">
+
+      <!-- ALTERNATIVA A -->
+      <div class="option-card" onclick="responder('A')">
+        <div class="option-header">
+          <div class="option-letter">A</div>
+          <span>Gerador de 136 V e Resistência de 3,2 Ω</span>
+        </div>
+        <div class="option-video-slot">
+          <!-- 🎬 VÍDEO DA ALTERNATIVA A -->
+          <video autoplay loop muted playsinline src="circuito.mp4"></video>
+        </div>
+      </div>
+
+      <!-- ALTERNATIVA B (CORRETA) -->
+      <div class="option-card" onclick="responder('B')">
+        <div class="option-header">
+          <div class="option-letter">B</div>
+          <span>Gerador de 120 V e Resistência de 2,4 Ω</span>
+        </div>
+        <div class="option-video-slot">
+          <!-- 🎬 VÍDEO DA ALTERNATIVA B -->
+          <video autoplay loop muted playsinline src="circuito_120v.mp4"></video>
+        </div>
+      </div>
+
+      <!-- ALTERNATIVA C -->
+      <div class="option-card" onclick="responder('C')">
+        <div class="option-header">
+          <div class="option-letter">C</div>
+          <span>Gerador de 120 V e Resistência de 5,3 Ω</span>
+        </div>
+        <div class="option-video-slot">
+          <!-- 🎬 ESPAÇO FUTURO PARA VÍDEO DA ALTERNATIVA C -->
+          <p style="color: var(--text-muted); text-align: center; padding: 40px 0;">🎥 Vídeo do Circuito C (120 V | 5,3 Ω)</p>
+        </div>
+      </div>
+
+      <!-- ALTERNATIVA D -->
+      <div class="option-card" onclick="responder('D')">
+        <div class="option-header">
+          <div class="option-letter">D</div>
+          <span>Gerador de 102 V e Resistência de 2,4 Ω</span>
+        </div>
+        <div class="option-video-slot">
+          <!-- 🎬 ESPAÇO FUTURO PARA VÍDEO DA ALTERNATIVA D -->
+          <p style="color: var(--text-muted); text-align: center; padding: 40px 0;">🎥 Vídeo do Circuito D (102 V | 2,4 Ω)</p>
+        </div>
+      </div>
+
+      <!-- ALTERNATIVA E -->
+      <div class="option-card" onclick="responder('E')">
+        <div class="option-header">
+          <div class="option-letter">E</div>
+          <span>Gerador de 102 V e Resistência de 5,3 Ω</span>
+        </div>
+        <div class="option-video-slot">
+          <!-- 🎬 ESPAÇO FUTURO PARA VÍDEO DA ALTERNATIVA E -->
+          <p style="color: var(--text-muted); text-align: center; padding: 40px 0;">🎥 Vídeo do Circuito E (102 V | 5,3 Ω)</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CAIXA DE FEEDBACK E RESOLUÇÃO -->
+    <div id="feedback" class="feedback-panel">
+      <div id="feedback-title" class="feedback-header"></div>
+      
+      <!-- Resolução Completa -->
+      <div class="resolution-box">
+        <h3>📐 Resolução Detalhada Passo a Passo:</h3>
+
+        <div class="resolution-step">
+          <strong>Passo 1: Encontrar a resistência interna (r) de cada placa</strong><br>
+          A equação do gerador real é $U = \varepsilon - r \cdot I$.<br>
+          Com circuito aberto, a f.e.m. é $\varepsilon = 40\text{ V}$. Em operação normal: $U = 34\text{ V}$ e $I = 7,5\text{ A}$.<br>
+          $$34 = 40 - r \cdot 7,5 \implies 7,5r = 6 \implies r = 0,8\,\Omega$$
+        </div>
+
+        <div class="resolution-step">
+          <strong>Passo 2: Determinar a quantidade de placas em série (n)</strong><br>
+          A bomba d'água precisa operar com $100\text{ V} \pm 5\text{ V}$ (entre $95\text{ V}$ e $105\text{ V}$).<br>
+          A tensão de operação fornecida por $n$ placas conectadas em série é $U_{total} = n \times 34\text{ V}$.<br>
+          • Se usarmos 2 placas: $U = 2 \times 34 = 68\text{ V}$ (Insuficiente)<br>
+          • Se usarmos 3 placas: $U = 3 \times 34 = \mathbf{102\text{ V}}$ (Perfeito! Está na faixa de $95\text{ V}$ a $105\text{ V}$)<br>
+          • Se usarmos 4 placas: $U = 4 \times 34 = 136\text{ V}$ (Sobretensão/Queima a bomba)
+        </div>
+
+        <div class="resolution-step">
+          <strong>Passo 3: Montar as características do Gerador Equivalente (3 placas em série)</strong><br>
+          • Força Eletromotriz equivalente ($\varepsilon_{eq}$): $3 \times 40\text{ V} = \mathbf{120\text{ V}}$<br>
+          • Resistência interna equivalente ($r_{eq}$): $3 \times 0,8\,\Omega = \mathbf{2,4\,\Omega}$
+        </div>
+
+        <p style="margin-top: 15px; font-weight: bold; color: var(--accent);">
+          Gabarito Oficial: Alternativa B (120 V e 2,4 Ω)
+        </p>
+      </div>
+    </div>
+
   </div>
 </div>
 
 <script>
-  function testarCircuito(opcao, v, r) {
-    const statusBadge = document.getElementById('circuit-status');
+  function responder(opcao) {
     const feedback = document.getElementById('feedback');
-    const fbTitle = document.getElementById('feedback-title');
-    const fbBody = document.getElementById('feedback-body');
+    const title = document.getElementById('feedback-title');
 
-    feedback.className = 'feedback active';
+    feedback.classList.add('active');
 
     if (opcao === 'B') {
-      statusBadge.textContent = '💧 Bomba Operando (102 V)';
-      statusBadge.style.color = '#22c55e';
-
-      feedback.className = 'feedback active correct';
-      fbTitle.textContent = '✅ Resposta Correta! (Alternativa B)';
-      fbTitle.style.color = 'var(--success)';
-      fbBody.innerHTML = `
-        <p><b>Resolução Física Passo a Passo:</b></p>
-        <ul>
-          <li><b>Resistência de 1 placa:</b> $U = \\varepsilon - r \\cdot I \\implies 34 = 40 - 7,5r \\implies r = 0,8\\,\\Omega$</li>
-          <li><b>Número de placas:</b> Com 3 placas em série, a tensão de operação na bomba fica $3 \\times 34\\text{V} = 102\\text{V}$ (perfeitamente dentro da faixa permitida de $95\\text{V}$ a $105\\text{V}$).</li>
-          <li><b>Gerador equivalente:</b> $\\varepsilon = 3 \\times 40\\text{V} = 120\\text{V}$ e $r_{eq} = 3 \\times 0,8\\,\\Omega = 2,4\\,\\Omega$.</li>
-        </ul>`;
+      feedback.className = 'feedback-panel active correct';
+      title.innerHTML = '🎉 Parabéns, você acertou!';
+      title.style.color = 'var(--success)';
     } else {
-      statusBadge.textContent = opcao === 'A' ? '💥 Sobretensão!' : '❌ Falha de Tensão';
-      statusBadge.style.color = '#ef4444';
-
-      feedback.className = 'feedback active wrong';
-      fbTitle.textContent = `❌ Alternativa ${opcao} Incorreta`;
-      fbTitle.style.color = 'var(--danger)';
-
-      if (opcao === 'A') {
-        fbBody.innerHTML = 'Essa alternativa representa 4 placas em série (136V do vídeo). A tensão excede o limite tolerado pela bomba, podendo queimá-la!';
-      } else if (opcao === 'D' || opcao === 'E') {
-        fbBody.innerHTML = '102V é a f.e.m. em circuito aberto de uma quantidade incorreta de placas. Quando a corrente circular, a tensão cairá muito abaixo do necessário!';
-      } else {
-        fbBody.innerHTML = 'A resistência interna do gerador equivalente foi calculada incorretamente para essa quantidade de placas.';
-      }
+      feedback.className = 'feedback-panel active wrong';
+      title.innerHTML = '❌ Poxa, não foi dessa vez...';
+      title.style.color = 'var(--danger)';
     }
+
+    // Rola a tela suavemente para a explicação
+    feedback.scrollIntoView({ behavior: 'smooth' });
   }
 </script>
+
+</body>
+</html>
 
 </body>
 </html>
